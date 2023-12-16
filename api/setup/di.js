@@ -1,5 +1,6 @@
 const IoC = require('electrolyte');
 
+IoC.use(IoC.dir('libs'));
 IoC.use(IoC.dir('controllers'));
 IoC.use(IoC.dir('db/models'));
 IoC.use(IoC.dir('db/repositories'));
