@@ -4,8 +4,9 @@ class UserController {
         this.userService = userService;
     }
 
-    list(req, res) {
-        res.send(this.userService.getUsers());
+    async list(req, res) {
+        const users = await this.userService.getUsers();
+        res.send(users);
     }
 
 }

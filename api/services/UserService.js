@@ -1,12 +1,13 @@
 class UserService {
+    constructor(userRepository) {
+        this.userRepository = userRepository;
+    }
     getUsers() {
-        return [
-            {
-                name: 'Arthur',
-                surname: 'Vahanyan'
-            }
-        ]
+        return this.userRepository.list();
     }
 }
+
+UserService['@singleton'] = true;
+UserService['@require'] = ['UserRepository'];
 
 module.exports = UserService;

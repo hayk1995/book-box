@@ -1,8 +1,10 @@
 const IoC = require('electrolyte');
 
 IoC.use(IoC.dir('controllers'));
+IoC.use(IoC.dir('db/models'));
+IoC.use(IoC.dir('db/repositories'));
 IoC.use(IoC.dir('services'));
-class Di {
+class DI {
     userController;
     async setup() {
         const [userController] = await Promise.all([IoC.create('UserController')]);
@@ -10,4 +12,4 @@ class Di {
     }
 }
 
-module.exports = Di;
+module.exports = DI;
