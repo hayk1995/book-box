@@ -1,25 +1,24 @@
 const express = require('express');
-const mongoose = require('mongoose');
+const DI = require('./di');
+const AppRouter = require('./router');
+// Create an Express application
+
 const app = express();
-const port = process.env.PORT || 3000;
+const di = new DI();
+const appRouter = new AppRouter();
 
-// Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/book-box-dev', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
 
-const db = mongoose.connection;
+async function start() {
+    await di.setup();
+    appRouter.setup(app, di);
 
-db.on('error', (error) => console.error('MongoDB connection error:', error));
-db.once('open', () => console.log('Connected to MongoDB'));
+    const port = 3000;
+    app.listen(port, () => {
+        console.log(`Server is running on http://localhost:${port}`);
+    });
+}
 
-// Define a basic route
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
-});
-
-// Start the server
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+start()
+    .then((res)=>{
+        console.log('Application initialized')
+    });
