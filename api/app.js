@@ -1,5 +1,6 @@
 const express = require('express');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const DI = require('./setup/di');
 const AppRouter = require('./setup/router');
@@ -13,9 +14,10 @@ const appRouter = new AppRouter();
 
 async function start() {
     await di.setup();
-    app.use(bodyParser.json())
+    app.use(bodyParser.json());
+    app.use(cors());
     appRouter.setup(app, di);
-    di.migrationService.import();
+    await di.migrationService.import();
 
 
     const port = 8080;
