@@ -6,6 +6,14 @@ class UserRepository {
     list() {
         return this.userModel.find().lean();
     }
+
+    getById(id) {
+        return this.userModel.findById(id);
+    }
+
+    save(userObj) {
+        return this.userModel.create(userObj)
+    }
 }
 
 UserRepository['@singleton'] = true;

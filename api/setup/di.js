@@ -8,7 +8,8 @@ IoC.use(IoC.dir('services'));
 class DI {
     userController;
     async setup() {
-        const [userController] = await Promise.all([IoC.create('UserController')]);
+        const [migrationService, userController] = await Promise.all([IoC.create('MigrationService'), IoC.create('UserController')]);
+        this.migrationService = migrationService;
         this.userController = userController;
     }
 }
