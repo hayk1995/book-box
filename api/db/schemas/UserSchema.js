@@ -17,6 +17,10 @@ const UserSchema = new Schema({
     creationDateTime: {
         type: Date,
         default: Date.now
+    },
+    lastModified: {
+        type: Date,
+        default: Date.now
     }
 });
 

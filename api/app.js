@@ -1,5 +1,6 @@
 const express = require('express');
-const bodyParser = require('body-parser');
+require("express-async-errors");
+const bodyParser = require('body-parser')
 const cors = require('cors');
 
 const DI = require('./setup/di');
@@ -11,14 +12,20 @@ const app = express();
 const di = new DI();
 const appRouter = new AppRouter();
 
+const errorHandling = (err, req, res, next) => {
+    res.status(err.statusCode ?? 500).json({
+        msg: err.message,
+        success: false,
+    });
+};
 
 async function start() {
     await di.setup();
     app.use(bodyParser.json());
     app.use(cors());
     appRouter.setup(app, di);
-    await di.migrationService.import();
-
+    app.use(errorHandling);
+    di.migrationService.import();
 
     const port = 8080;
     app.listen(port, () => {

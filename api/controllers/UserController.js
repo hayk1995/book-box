@@ -1,34 +1,55 @@
+const NotFound = require("../exeption/NotFound");
 
 class UserController {
-    constructor(userService) {
-        this.userService = userService;
-    }
+  constructor(userService) {
+    this.userService = userService;
+  }
 
-    async list(req, res) {
-        const users = await this.userService.getUsers();
-        res.send(users);
-    }
+  async list(req, res) {
+    const users = await this.userService.getUsers();
+    res.send(users);
+  }
 
-    async getById(req, res) {
-        let userId = req.params.userId;
-        const user = await this.userService.getById(userId);
-        if (!user) {
-            return res.status(404).send({ message: `User with Id ${userId} wasn't found` });
-        }
-        res.send(user);
+  async getById(req, res) {
+    let userId = req.params.userId;
+    const user = await this.userService.getById(userId);
+    if (!user) {
+      throw new NotFound('User not found');
     }
+    res.send(user);
+  }
 
-    async createService(req, res) {
-        const userId = req.params.userId;
-        const serviceData = req.body;
+  async createService(req, res) {
+    const userId = req.params.userId;
+    const serviceData = req.body;
+      const updatedUser = await this.userService.addServiceToUser(userId, serviceData);
+      res.status(200).json(updatedUser);
+  }
 
-        try {
-            const updatedUser = await this.userService.addServiceToUser(userId, serviceData);
-            res.status(200).json(updatedUser);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
+  async updateService(req, res) {
+    const { userId, serviceId } = req.params;
+    const serviceData = req.body;
+
+    try {
+      const updatedUser = await this.userService.updateUserService(userId, serviceId, serviceData);
+      res.status(200).json(updatedUser);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
     }
+  }
+
+  async deleteService(req, res) {
+    const userId = req.params.userId;
+    const serviceId = req.params.serviceId;
+
+    try {
+      const updatedUser = await this.userService.removeServiceFromUser(userId,
+          serviceId);
+      res.status(200).json(updatedUser);
+    } catch (error) {
+      res.status(500).json({message: error.message});
+    }
+  }
 
 }
 

@@ -10,9 +10,14 @@ const ServiceSchema = new Schema({
   },
   name: String,
   description: String,
-  price: String,
+  price: Number,
+  currency: String,
   durationInSecond: Number,
   creationDateTime: {
+    type: Date,
+    default: Date.now
+  },
+  lastModified: {
     type: Date,
     default: Date.now
   }
