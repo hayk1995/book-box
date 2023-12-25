@@ -1,17 +1,14 @@
 import { BrowserRouter } from "react-router-dom";
+import { ChakraProvider } from '@chakra-ui/react';
 import Dashboard from './pages/dashboard';
 
 function App() {
   return (
-    <BrowserRouter>
-      <div className="App">
-        <header className="App-header">
-          <div>
-            <Dashboard/>
-          </div>
-        </header>
-      </div>
-    </BrowserRouter>
+    <ChakraProvider>
+      <BrowserRouter>
+        <Dashboard />
+      </BrowserRouter>
+    </ChakraProvider>
   );
 }
 
