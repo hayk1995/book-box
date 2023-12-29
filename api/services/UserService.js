@@ -75,6 +75,40 @@ class UserService {
         await user.save();
         return user;
     }
+
+    async upsertRecurringAvailability(userId, availabilityData) {
+        const user = await this.userRepository.getById(userId);
+        if (!user) {
+            throw new NotFound('User not found');
+        }
+
+        const existingIndex = user.recurringAvailabilities.findIndex(avail => avail.dayOfWeek === availabilityData.dayOfWeek);
+        if (existingIndex > -1) {
+            user.recurringAvailabilities[existingIndex] = availabilityData;
+        } else {
+            user.recurringAvailabilities.push(availabilityData);
+        }
+
+        await user.save();
+        return user;
+    }
+
+    async upsertFixedAvailability(userId, availabilityData) {
+        const user = await this.userRepository.getById(userId);
+        if (!user) {
+            throw new NotFound('User not found');
+        }
+
+        const existingIndex = user.fixedAvailabilities.findIndex(avail => avail.date.toISOString() === new Date(availabilityData.date).toISOString());
+        if (existingIndex > -1) {
+            user.fixedAvailabilities[existingIndex] = availabilityData;
+        } else {
+            user.fixedAvailabilities.push(availabilityData);
+        }
+
+        await user.save();
+        return user;
+    }
 }
 
 UserService['@singleton'] = true;

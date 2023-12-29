@@ -20,6 +20,14 @@ class AppRouter {
             await di.userController.updateService(req, res);
         });
 
+        app.put('/users/:userId/recurring-availability', async (req, res) => {
+            await di.userController.upsertRecurringAvailability(req, res);
+        });
+
+        app.put('/users/:userId/fixed-availability', async (req, res) => {
+            await di.userController.upsertFixedAvailability(req, res);
+        });
+
     }
 }
 

@@ -4,6 +4,49 @@ const { v4: uuidv4 } = require('uuid');
 
 const { Schema } = mongoose;
 
+const RecurringAvailabilitySchema = new Schema({
+    dayOfWeek: {
+        type: String,
+        enum: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        required: true
+    },
+    startTime: {
+        type: Date,
+        required: true
+    },
+    endTime: {
+        type: Date,
+        required: true
+    },
+    creationDateTime: {
+        type: Date,
+        default: Date.now
+    },
+});
+
+const FixedAvailabilitySchema = new Schema({
+    date: {
+        type: Date,
+        required: true
+    },
+    startTime: {
+        type: Date,
+        required: true
+    },
+    endTime: {
+        type: Date,
+        required: true
+    },
+    available: {
+        type: Boolean,
+        required: true
+    },
+    creationDateTime: {
+        type: Date,
+        default: Date.now
+    },
+});
+
 const UserSchema = new Schema({
     _id: {
         type: String,
@@ -14,6 +57,8 @@ const UserSchema = new Schema({
     email: String,
     token: String,
     services: [ServiceSchema],
+    recurringAvailabilities: [RecurringAvailabilitySchema],
+    fixedAvailabilities: [FixedAvailabilitySchema],
     creationDateTime: {
         type: Date,
         default: Date.now
